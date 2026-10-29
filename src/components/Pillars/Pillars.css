@@ -494,3 +494,83 @@
     transform: none;
   }
 }
+
+/* =========================================
+   SAFARI / iOS FLIP FIX  (file ke end me paste karo)
+========================================= */
+
+/* 1. Double perspective hatao, Safari isse confuse hota hai */
+.pg {
+  perspective: none;
+}
+
+/* 2. isolation hatao (Safari me 3D flatten karta hai) */
+.pillar-card {
+  isolation: auto;
+  -webkit-perspective: 1400px;
+  perspective: 1400px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 3. filter ko transition se nikalo, sirf transform rakho */
+.pillar-card-inner {
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  transform: translateZ(0);
+  will-change: transform;
+  transition: transform 0.95s cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.pillar-card:hover .pillar-card-inner,
+.pillar-card:focus-within .pillar-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* 4. Dono faces pe backface hidden + alag depth */
+.pillar-face {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform-style: flat;
+  transform-style: flat;
+}
+
+.pillar-front {
+  transform: rotateY(0deg) translateZ(1px);
+  -webkit-transform: rotateY(0deg) translateZ(1px);
+}
+
+.pillar-back {
+  transform: rotateY(180deg) translateZ(1px);
+  -webkit-transform: rotateY(180deg) translateZ(1px);
+}
+
+/* 5. Pakka solution: flip ke beech me wali face ko visibility se chhupao.
+      Isse Safari me mirror text kabhi dikh hi nahi sakta. */
+.pillar-front,
+.pillar-back {
+  transition: visibility 0s linear 0.45s;
+}
+
+.pillar-front {
+  visibility: visible;
+}
+
+.pillar-back {
+  visibility: hidden;
+}
+
+.pillar-card:hover .pillar-front,
+.pillar-card:focus-within .pillar-front {
+  visibility: hidden;
+}
+
+.pillar-card:hover .pillar-back,
+.pillar-card:focus-within .pillar-back {
+  visibility: visible;
+}
+
+/* 6. Light sweep ko Safari me clip karo */
+.pillar-back::before {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}

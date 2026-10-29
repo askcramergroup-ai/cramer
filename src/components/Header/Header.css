@@ -1,4 +1,3 @@
-
 .hd {
   position: fixed;
   top: 0;
@@ -48,8 +47,11 @@
   transition: 0.4s;
 }
 
-/* Logo + brand text container
-   Brand component ke andar ye class use karein */
+.brand-wrap {
+  flex-shrink: 0;
+}
+
+/* Logo + brand text container */
 .bar .brand {
   display: flex;
   flex-direction: column;
@@ -220,6 +222,8 @@ nav .cta {
 @media (max-width: 1200px) {
   .burger {
     display: block;
+    order: 3;
+    flex-shrink: 0;
   }
 
   .topbar span {
@@ -228,6 +232,32 @@ nav .cta {
 
   .topbar .em {
     margin-left: auto;
+  }
+
+  /* ---- Logo LEFT corner, text CENTER ---- */
+  .brand-wrap,
+  .bar .brand {
+    display: contents;
+  }
+
+  /* Red: enlarged logo icon in left corner */
+  .bar .brand img,
+  .bar .brand .brand-logo {
+    order: 1;
+    flex-shrink: 0;
+    width: 64px;
+    height: auto;
+    max-width: none;
+  }
+
+  /* Orange: enlarged text block in the middle */
+  .bar .brand .brand-text,
+  .bar .brand .brand-name {
+    order: 2;
+    flex: 1;
+    text-align: center;
+    font-size: 1.25rem;
+    letter-spacing: 0.06em;
   }
 
   nav {
@@ -282,21 +312,23 @@ nav .cta {
 
 @media (max-width: 600px) {
   .bar {
-    gap: 12px;
+    gap: 10px;
     padding: 8px 0;
   }
 
-  .bar .brand {
-    gap: 3px;
+  .bar .brand img,
+  .bar .brand .brand-logo {
+    width: 56px;
   }
 
   .bar .brand .brand-text,
   .bar .brand .brand-name {
-    font-size: 0.8rem;
-    font-weight: 800;
+    font-size: 1.05rem;
   }
 
   .topbar .container {
     padding: 7px 0;
   }
 }
+
+
