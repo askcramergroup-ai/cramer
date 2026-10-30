@@ -1,20 +1,66 @@
+import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import Media from '../Media/Media'
 import { IMG } from '../../data/media'
 import './Hero.css'
 
 export default function Hero() {
+  const videoRef = useRef(null)
   const videoSrc = `${import.meta.env.BASE_URL}videos/hero_videos.mp4`
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    // React me "muted" DOM par reliably set nahi hota, iOS ke liye zaroori hai
+    video.muted = true
+    video.defaultMuted = true
+    video.setAttribute('muted', '')
+    video.setAttribute('playsinline', '')
+    video.setAttribute('webkit-playsinline', '')
+
+    const tryPlay = () => {
+      const p = video.play()
+      if (p && typeof p.catch === 'function') {
+        p.catch(() => {
+          /* Autoplay blocked (Low Power Mode): poster image dikhegi */
+        })
+      }
+    }
+
+    tryPlay()
+
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') tryPlay()
+    }
+
+    document.addEventListener('visibilitychange', onVisible)
+    window.addEventListener('touchstart', tryPlay, { once: true, passive: true })
+
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible)
+      window.removeEventListener('touchstart', tryPlay)
+    }
+  }, [])
 
   return (
     <section className="hero">
-      {/* Background Video */}
-      <Media
-        video
-        src={videoSrc}
-        poster={IMG.hero}
-        className="hbg"
-      />
+      {/* Background Video (wrapper animates, video stays static) */}
+      <div className="hbg" aria-hidden="true">
+        <video
+          ref={videoRef}
+          src={videoSrc}
+          poster={IMG.hero}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          controls={false}
+          disablePictureInPicture
+          disableRemotePlayback
+          tabIndex={-1}
+        />
+      </div>
 
       {/* Background Overlays */}
       <div className="hov" />
@@ -22,9 +68,7 @@ export default function Hero() {
 
       {/* Hero Content */}
       <div className="container hc">
-        <span className="eyebrow">
-          Engineering | Projects | Mentoring
-        </span>
+        <span className="eyebrow">Engineering | Projects | Mentoring</span>
 
         <h1>
           <span className="line">Precision Engineering.</span>

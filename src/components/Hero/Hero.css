@@ -5,6 +5,7 @@
 .hero {
   position: relative;
   min-height: 100vh;
+  min-height: 100svh; /* iPhone Safari address bar fix */
   display: flex;
   align-items: center;
   color: #ffffff;
@@ -26,17 +27,34 @@
   border-radius: 0 !important;
   overflow: hidden;
   z-index: 0;
+  pointer-events: none;
   animation: heroZoom 25s ease-in-out infinite alternate;
+  will-change: transform;
 }
 
-.hbg video,
-video.hbg {
+.hbg video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* iOS / Safari native play button + controls ko poori tarah hide karo */
+.hbg video::-webkit-media-controls,
+.hbg video::-webkit-media-controls-panel,
+.hbg video::-webkit-media-controls-play-button,
+.hbg video::-webkit-media-controls-start-playback-button,
+.hbg video::-webkit-media-controls-overlay-play-button,
+.hbg video::-webkit-media-controls-enclosure {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  -webkit-appearance: none;
 }
 
 /* ==============================
@@ -175,6 +193,7 @@ video.hbg {
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.65);
   background: rgba(255, 255, 255, 0.06);
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
 }
 
@@ -238,6 +257,7 @@ video.hbg {
 @media (max-width: 768px) {
   .hero {
     min-height: 90vh;
+    min-height: 90svh;
     /* top padding increased so content clears the fixed header */
     padding: 175px 0 85px;
   }
@@ -274,6 +294,7 @@ video.hbg {
 @media (max-width: 480px) {
   .hero {
     min-height: 85vh;
+    min-height: 85svh;
     /* starts below emergency bar + logo/menu header */
     padding: 195px 0 80px;
   }
