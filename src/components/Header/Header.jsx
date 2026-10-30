@@ -23,7 +23,7 @@ export default function Header() {
       <div className="topbar">
         <div className="container">
           <span>📞 +61 452 456 745</span>
-          <span>✉ info@cramergroup.com</span>
+          <span>✉ careers@cramergroup.au</span>
           <a href="tel:1800CRAMER" className="em">
             24/7 Emergency: 1800-CRAMER
           </a>
