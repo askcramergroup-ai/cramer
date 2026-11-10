@@ -23,6 +23,24 @@ const TRADE_WORKS = {
   ],
 }
 
+// "Project Delivery" / "Projects Delivery" dono match honge
+const isProjectDelivery = (n) => /projects?\s*delivery/i.test(n.label)
+
+// Trade Works ko Project Delivery ke baad insert karta hai
+function buildNavItems(nav) {
+  const existing = nav.find((n) => n.label === TRADE_WORKS.label)
+  const tradeWorks = existing || TRADE_WORKS
+
+  // Pehle se NAV me ho to usko hata do, phir sahi jagah par daalo
+  const base = nav.filter((n) => n.label !== TRADE_WORKS.label)
+  const idx = base.findIndex(isProjectDelivery)
+
+  // Project Delivery nahi mila to end me add hoga
+  if (idx === -1) return [...base, tradeWorks]
+
+  return [...base.slice(0, idx + 1), tradeWorks, ...base.slice(idx + 1)]
+}
+
 export default function Header() {
   const [sc, setSc] = useState(false)
   const [open, setOpen] = useState(false)
@@ -34,10 +52,7 @@ export default function Header() {
     return () => window.removeEventListener('scroll', f)
   }, [])
 
-  // Trade Works ko NAV me add karo (agar pehle se NAV me nahi hai)
-  const items = NAV.some((n) => n.label === TRADE_WORKS.label)
-    ? NAV
-    : [...NAV, TRADE_WORKS]
+  const items = buildNavItems(NAV)
 
   return (
     <header className={`hd ${sc ? 'sc' : ''}`}>
