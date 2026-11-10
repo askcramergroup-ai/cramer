@@ -13,7 +13,7 @@ export default function Pillars() {
             <span className="eyebrow">Our Core Pillars</span>
 
             <h2 className="title">
-              Four Pillars. One Integrated Firm.
+              Five Pillars. One Integrated Firm.
             </h2>
 
             <p className="lead">
@@ -23,7 +23,7 @@ export default function Pillars() {
           </div>
         </Reveal>
 
-        <div className="grid g4 pg pillars-grid">
+        <div className="grid g5 pg pillars-grid">
           {PILLARS.map((p, i) => (
             <Reveal key={p.t} delay={i * 150}>
               <article className="pillar-card">

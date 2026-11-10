@@ -1,7 +1,7 @@
 /* =========================================
    CRAMER GROUP — CINEMATIC PILLARS
    3D Flip + Depth + Light Sweep
-   (4 cards layout + Safari/iOS fix merged)
+   (5 cards layout + Safari/iOS fix merged)
 ========================================= */
 
 .pillars-section {
@@ -16,7 +16,8 @@
 }
 
 /* =========================================
-   GRID (4 CARDS)
+   GRID (5 CARDS)
+   Desktop: 3 on top + 2 centered below
 ========================================= */
 
 .pg {
@@ -24,22 +25,55 @@
   /* perspective yaha nahi, sirf .pillar-card pe (Safari fix) */
 }
 
-.pillars-section .pillars-grid.g4 {
+.pillars-section .pillars-grid.g5 {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 22px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 24px;
 }
 
+.pillars-section .pillars-grid.g5 > * {
+  grid-column: span 2;
+  min-width: 0;
+}
+
+/* 4th and 5th card centered in the second row */
+.pillars-section .pillars-grid.g5 > *:nth-child(4) {
+  grid-column: 2 / span 2;
+}
+
+.pillars-section .pillars-grid.g5 > *:nth-child(5) {
+  grid-column: 4 / span 2;
+}
+
+/* Tablet: 2 columns, 5th card centered */
 @media (max-width: 1200px) {
-  .pillars-section .pillars-grid.g4 {
+  .pillars-section .pillars-grid.g5 {
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
   }
+
+  .pillars-section .pillars-grid.g5 > *,
+  .pillars-section .pillars-grid.g5 > *:nth-child(4) {
+    grid-column: auto;
+  }
+
+  .pillars-section .pillars-grid.g5 > *:nth-child(5) {
+    grid-column: 1 / -1;
+    width: calc(50% - 12px);
+    justify-self: center;
+  }
 }
 
+/* Mobile: 1 column */
 @media (max-width: 700px) {
-  .pillars-section .pillars-grid.g4 {
+  .pillars-section .pillars-grid.g5 {
     grid-template-columns: 1fr;
+  }
+
+  .pillars-section .pillars-grid.g5 > *:nth-child(5) {
+    grid-column: auto;
+    width: 100%;
+    justify-self: stretch;
   }
 }
 
@@ -49,7 +83,7 @@
 
 .pillar-card {
   position: relative;
-  height: 420px;
+  height: 440px;
   min-width: 0;
   -webkit-perspective: 1400px;
   perspective: 1400px;
@@ -365,15 +399,30 @@
   font-size: 1.3rem;
 }
 
-/* BACK SIDE LIST */
+/* BACK SIDE LIST (scrollable for long lists like Trade Works) */
 
 .pillar-back-list {
   position: relative;
   display: grid;
+  align-content: start;
   gap: 10px;
-  margin: 4px 0 16px;
-  padding: 0;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 4px 0 14px;
+  padding: 0 6px 0 0;
   list-style: none;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(125, 211, 252, 0.45) transparent;
+}
+
+.pillar-back-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.pillar-back-list::-webkit-scrollbar-thumb {
+  background: rgba(125, 211, 252, 0.45);
+  border-radius: 4px;
 }
 
 .pillar-back-list li {
@@ -392,7 +441,7 @@
   animation: pillarDetailReveal 0.45s ease forwards;
 }
 
-/* 6 items tak delay support */
+/* 8 items tak delay support */
 
 .pillar-card:hover .pillar-back-list li:nth-child(1),
 .pillar-card:focus-within .pillar-back-list li:nth-child(1) { animation-delay: 0.18s; }
@@ -411,6 +460,12 @@
 
 .pillar-card:hover .pillar-back-list li:nth-child(6),
 .pillar-card:focus-within .pillar-back-list li:nth-child(6) { animation-delay: 0.58s; }
+
+.pillar-card:hover .pillar-back-list li:nth-child(7),
+.pillar-card:focus-within .pillar-back-list li:nth-child(7) { animation-delay: 0.66s; }
+
+.pillar-card:hover .pillar-back-list li:nth-child(8),
+.pillar-card:focus-within .pillar-back-list li:nth-child(8) { animation-delay: 0.74s; }
 
 .pillar-check {
   display: grid;
@@ -433,6 +488,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  flex-shrink: 0;
   margin-top: auto;
   padding: 13px 15px;
   border: 1px solid rgba(118, 212, 255, 0.35);
@@ -485,7 +541,7 @@
 
 @media (max-width: 1200px) {
   .pillar-card {
-    height: 390px;
+    height: 420px;
   }
 
   .pillar-face {
@@ -512,7 +568,7 @@
   }
 
   .pillar-card {
-    height: 380px;
+    height: 410px;
   }
 }
 
@@ -526,7 +582,7 @@
   }
 
   .pillar-card {
-    height: 380px;
+    height: 420px;
   }
 
   .pillar-face {
