@@ -158,9 +158,11 @@ nav a {
   transition: 0.35s;
   border-top: 3px solid var(--blue);
   list-style: none;
+  margin: 0; /* NEW */
 }
 
-.item:hover .drop {
+.item:hover .drop,
+.item:focus-within .drop { /* NEW: keyboard/tap support */
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
@@ -171,6 +173,7 @@ nav a {
   font-weight: 500;
   border-radius: 8px;
   padding: 10px 14px;
+  white-space: nowrap; /* NEW */
 }
 
 .drop a:hover {
@@ -179,10 +182,36 @@ nav a {
   padding-left: 22px;
 }
 
+/* NEW: Trade Works is the last nav item, so its dropdown
+   opens towards the left and never goes off-screen */
+nav .item:last-of-type .drop {
+  left: auto;
+  right: 0;
+}
+
 nav .cta {
   margin-left: 10px;
   padding: 11px 20px;
   font-size: 0.78rem;
+}
+
+/* NEW: slightly tighter links on mid-size desktops
+   so the extra Trade Works item fits in one line */
+@media (max-width: 1400px) and (min-width: 1201px) {
+  nav a {
+    padding: 12px 9px;
+    font-size: 0.76rem;
+  }
+
+  .item > a:after {
+    left: 9px;
+    right: 9px;
+  }
+
+  nav .cta {
+    margin-left: 6px;
+    padding: 10px 14px;
+  }
 }
 
 /* Mobile menu button */
@@ -296,7 +325,14 @@ nav .cta {
     display: none;
   }
 
-  .item:hover .drop {
+  /* NEW: reset the desktop right-align for last item on mobile */
+  nav .item:last-of-type .drop {
+    left: auto;
+    right: auto;
+  }
+
+  .item:hover .drop,
+  .item:focus-within .drop { /* NEW */
     display: block;
   }
 
@@ -330,5 +366,3 @@ nav .cta {
     padding: 7px 0;
   }
 }
-
-

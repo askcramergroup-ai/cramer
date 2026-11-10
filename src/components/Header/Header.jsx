@@ -1,15 +1,31 @@
-
 import { useState, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { NAV } from '../../data/content'
 import Brand from '../Brand/Brand'
 import './Header.css'
 
+const TRADE_WORKS = {
+  label: 'Trade Works',
+  to: '/trade-works',
+  sub: [
+    'Painting Services',
+    'Roofing',
+    'Tiling',
+    'Carpentry',
+    'Plastering',
+  ],
+  subTo: [
+    '/trade-works/painting',
+    '/trade-works/roofing',
+    '/trade-works/tiling',
+    '/trade-works/carpentry',
+    '/trade-works/plastering',
+  ],
+}
+
 export default function Header() {
   const [sc, setSc] = useState(false)
   const [open, setOpen] = useState(false)
-
-  const base = import.meta.env.BASE_URL
 
   useEffect(() => {
     const f = () => setSc(window.scrollY > 40)
@@ -17,6 +33,11 @@ export default function Header() {
     window.addEventListener('scroll', f)
     return () => window.removeEventListener('scroll', f)
   }, [])
+
+  // Trade Works ko NAV me add karo (agar pehle se NAV me nahi hai)
+  const items = NAV.some((n) => n.label === TRADE_WORKS.label)
+    ? NAV
+    : [...NAV, TRADE_WORKS]
 
   return (
     <header className={`hd ${sc ? 'sc' : ''}`}>
@@ -34,7 +55,7 @@ export default function Header() {
         <Brand size="md" onClick={() => setOpen(false)} />
 
         <nav className={open ? 'open' : ''}>
-          {NAV.map((n) => (
+          {items.map((n) => (
             <div className="item" key={n.label}>
               <NavLink
                 to={n.to}
